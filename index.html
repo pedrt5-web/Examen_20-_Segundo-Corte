@@ -1,0 +1,1258 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Interactivo: Tecnología de Incendios y Manejo de Materiales</title>
+    <style>
+        :root {
+            --primary: #1b365d;
+            --secondary: #c8102e;
+            --accent: #f39c12;
+            --success: #1e8449;
+            --bg-light: #f4f6f9;
+            --text-dark: #2c3e50;
+            --border: #dce1e7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Cabecera */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #0f2342 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid var(--secondary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 950px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Barra de estado del participante */
+        .student-bar {
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
+        }
+
+        /* Tarjetas de Vista */
+        .view-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        h3 {
+            color: var(--primary);
+            margin: 1.2rem 0 0.6rem 0;
+        }
+
+        h4 {
+            color: var(--secondary);
+            margin: 1rem 0 0.4rem 0;
+        }
+
+        ul {
+            margin-left: 1.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--primary);
+        }
+
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.1);
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: #122644;
+        }
+
+        .btn:disabled {
+            background-color: #aeb6bf;
+            cursor: not-allowed;
+        }
+
+        .btn-danger {
+            background-color: var(--secondary);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background-color: #a00d24;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        /* Navegación de Módulos Teóricos */
+        .module-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.7rem 0.5rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-btn.completed {
+            border-bottom: 4px solid var(--success);
+        }
+
+        .module-content {
+            display: none;
+            padding: 0.5rem 0;
+        }
+
+        .module-content.active {
+            display: block;
+        }
+
+        .theory-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .formula-box {
+            background: #eef4fa;
+            border: 1px solid #c5d6e8;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin: 0.8rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .c-verde { background-color: #d4efdf; color: #145a32; font-weight: 700; }
+        .c-amarillo { background-color: #fcf3cf; color: #7d6608; font-weight: 700; }
+        .c-rojo { background-color: #fadbd8; color: #78281f; font-weight: 700; }
+
+        .micro-check {
+            background: #fef9e7;
+            border: 1px solid #f9e79f;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .micro-check label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Estilos de Evaluación */
+        .question-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.3rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .question-title {
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .option-label {
+            display: block;
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-light);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: normal;
+            color: var(--text-dark);
+            border: 1px solid transparent;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+        }
+
+        .option-label input {
+            margin-right: 0.6rem;
+        }
+
+        /* Resultados */
+        .score-box {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .score-pass {
+            background: #eafaf1;
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .score-fail {
+            background: #fdedec;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+
+        .sync-banner {
+            text-align: center;
+            font-weight: 600;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            background: #eef4fa;
+            border: 1px solid #c5d6e8;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-item {
+            padding: 0.9rem 1.1rem;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid #888;
+            background: #f8f9fa;
+            font-size: 0.92rem;
+        }
+
+        .feedback-item.ok {
+            border-left-color: var(--success);
+            background: #eafaf1;
+        }
+
+        .feedback-item.bad {
+            border-left-color: var(--secondary);
+            background: #fdedec;
+        }
+
+        @media (max-width: 600px) {
+            .module-tabs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Tecnología de Incendios y Manejo de Materiales</h1>
+    <p>Análisis de la Complejidad de la Prevención de Incendios y Almacenamiento Seguro</p>
+</header>
+
+<div class="container">
+    <!-- Barra de información del estudiante -->
+    <div id="studentBar" class="student-bar">
+        <div><strong>Participante:</strong> <span id="dispName"></span> (<span id="dispId"></span>)</div>
+        <div><strong>Progreso Teórico:</strong> <span id="dispProgress">0 / 4 Módulos</span></div>
+    </div>
+
+    <!-- VISTA 1: REGISTRO -->
+    <section id="view-register" class="view-section active">
+        <h2>1. Registro del Participante</h2>
+        <p style="margin-bottom: 1.2rem;">Complete sus datos para iniciar el recorrido teórico. Al finalizar los 4 módulos se habilitará la evaluación final (Escala: 1 a 20 pts | Mínima aprobatoria: 12 pts).</p>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="userId">Cédula de Identidad / Código:</label>
+                <input type="text" id="userId" placeholder="Ej: V-12345678" required>
+            </div>
+            <div class="form-group">
+                <label for="userName">Nombres y Apellidos:</label>
+                <input type="text" id="userName" placeholder="Ej: Juan Pérez" required>
+            </div>
+            <div class="form-group">
+                <label for="userDept">Departamento / Sección / Institución:</label>
+                <input type="text" id="userDept" placeholder="Ej: Seguridad Industrial / Sección 4D61" required>
+            </div>
+            <button type="submit" class="btn">Iniciar Curso Interactivo &rarr;</button>
+        </form>
+    </section>
+
+    <!-- VISTA 2: MÓDULOS TEÓRICOS -->
+    <section id="view-theory" class="view-section">
+        <h2>2. Contenido Teórico del Curso</h2>
+        
+        <div class="module-tabs">
+            <button class="tab-btn active" onclick="switchModule(0)" id="tab-0">Módulo 1</button>
+            <button class="tab-btn" onclick="switchModule(1)" id="tab-1">Módulo 2</button>
+            <button class="tab-btn" onclick="switchModule(2)" id="tab-2">Módulo 3</button>
+            <button class="tab-btn" onclick="switchModule(3)" id="tab-3">Módulo 4</button>
+        </div>
+
+        <!-- MÓDULO 1 -->
+        <div class="module-content active" id="mod-0">
+            <h3>Módulo 1: Medidas Esenciales de Seguridad para el Almacenamiento de Materiales y Sustancias Químicas</h3>
+            <div class="theory-box">
+                <p>Las medidas esenciales de seguridad para el almacenamiento de materiales y sustancias químicas abarcan la gestión administrativa, la identificación precisa de riesgos, la adecuada separación física de productos incompatibles, el cumplimiento de requisitos específicos de las instalaciones y una sólida preparación para emergencias.</p>
+
+                <h4>1. Gestión y Documentación del Almacenamiento</h4>
+                <ul>
+                    <li><strong>Minimización de Cantidad:</strong> Siempre que sea posible, se debe minimizar la cantidad de producto químico peligroso almacenado.</li>
+                    <li><strong>Procedimientos de Trabajo:</strong> Se debe confeccionar e implantar un procedimiento de trabajo para el almacenamiento y para todas las operaciones que entrañen riesgo (carga, descarga, trasvases, transporte, mantenimiento y limpieza).</li>
+                    <li><strong>Inventario Actualizado:</strong> Mantener un inventario actualizado que indique los productos químicos almacenados, incluyendo la fecha de adquisición y su cantidad.</li>
+                    <li><strong>Identificación y Etiquetado:</strong> Utilizar los recipientes originales; si se realiza un trasvase, etiquetar el nuevo recipiente con la información del original. Las etiquetas deben ser legibles y contener la identidad del producto, el nombre del fabricante/importador, los peligros físicos (inflamabilidad, reactividad) y los peligros para la salud (a menudo indicados mediante pictogramas).</li>
+                    <li><strong>Consulta de Riesgos:</strong> Consultar obligatoriamente el etiquetado y la Ficha de Datos de Seguridad (FDS) suministrada por el proveedor, donde se especifican reactividad, estabilidad, almacenamiento y actuación ante fugas o derrames.</li>
+                    <li><strong>Revisiones Periódicas:</strong> Realizar controles y revisiones periódicas para verificar el cumplimiento de las medidas de prevención implementadas.</li>
+                </ul>
+
+                <h4>2. Incompatibilidades y Separación</h4>
+                <ul>
+                    <li><strong>Estudio y Separación por Clase de Peligro:</strong> Estudiar incompatibilidades específicas y agrupar productos garantizando su compatibilidad. En una misma dependencia o cubeto solo se almacenarán productos de la misma clase o categoría de riesgo inferior, siempre que sean compatibles.</li>
+                    <li><strong>Restricciones de Almacenamiento Conjunto:</strong> No almacenar productos diferentes con posibles reacciones peligrosas en la misma estantería, especialmente en sentido vertical. Si se almacenan incompatibles horizontalmente, colocar productos o materiales inertes (no regulados o descritos como "no peligrosos" en la FDS) como "separadores".</li>
+                    <li><strong>Criterios Adicionales:</strong> Si se almacenan líquidos de diferentes clases en una misma estantería, el conjunto se considera como el líquido de la clase o categoría más peligrosa. Nunca almacenar productos que requieran agentes extintores incompatibles entre sí.</li>
+                    <li><strong>Corrosivos e Inflamables:</strong> Los líquidos corrosivos que también son inflamables o combustibles deben almacenarse con otros líquidos inflamables o combustibles, pero con separación física (mediante obra, grandes distancias o cubetos independientes) para evitar contacto en caso de incidente.</li>
+                </ul>
+
+                <h4>3. Requisitos de Instalaciones y Contenedores</h4>
+                <ul>
+                    <li><strong>Ubicación Segura:</strong> Evitar el almacenamiento en zonas de tránsito (escaleras, salidas de vehículos, vestíbulos) o zonas de uso habitual de empleados (salas de descanso, baños).</li>
+                    <li><strong>Iluminación y Temperatura:</strong> Iluminación adecuada que evite el calentamiento de productos susceptibles de generar reacciones peligrosas; aireación y luz natural protegida de la luz solar directa. Conservación general recomendada entre 15 y 20 °C.</li>
+                    <li><strong>Contención de Derrames:</strong> Emplear cubetos de retención, drenajes o sustancias absorbentes (paños o calcetines de contención). Los líquidos presentan mayores riesgos que los sólidos por su facilidad para fluir y alcanzar otros recipientes o desagües.</li>
+                    <li><strong>Estanterías y Apilamiento:</strong> Colocar envases sobre paletas o estanterías, evitando el almacenamiento directo sobre el suelo. En bidones, se recomienda dedicar una estantería a cada tipo de riesgo si es posible y mantener pasillos libres para paso e inspecciones. Los recipientes de líquidos de mayor capacidad van abajo; los productos más peligrosos van abajo y los menos peligrosos arriba.</li>
+                    <li><strong>Almacenamiento Especializado:</strong> Los productos que reaccionan con el agua deben ir en lugares secos y ventilados con aviso visible que prohíba el uso de agua en caso de incendio. Los inflamables deben separarse, sin focos de ignición y bien ventilados. Los gases en recipientes a presión deben separarse del resto, bien ventilados y con botellas arriostradas para evitar caídas. Las sustancias explosivas deben ubicarse fuera del almacén, en un lugar especial (polvorín).</li>
+                </ul>
+
+                <h4>4. Actuación y Equipamiento de Emergencia</h4>
+                <ul>
+                    <li><strong>Plan y Equipamiento:</strong> Conocer y disponer del plan de actuación ante emergencia química (incendio, fuga o derrame) y contar con extintores acordes a los productos, duchas de emergencia y fuentes lavaojos (donde haya riesgo de salpicaduras), kits de material absorbente y salidas de emergencia.</li>
+                    <li><strong>Señalización, Capacitación y Comunicación:</strong> Señalizar con advertencias de inflamables, explosivos, tóxicos, corrosivos o comburentes (y usar "peligro en general" cuando haya distinta peligrosidad). Contar con personal capacitado y comunicar cualquier incidencia que afecte la seguridad del almacenamiento.</li>
+                </ul>
+            </div>
+            <div class="micro-check">
+                <label>
+                    <input type="checkbox" onchange="toggleModuleComplete(0, this.checked)">
+                    Confirmo que he leído y comprendido el contenido del Módulo 1.
+                </label>
+            </div>
+        </div>
+
+        <!-- MÓDULO 2 -->
+        <div class="module-content" id="mod-1">
+            <h3>Módulo 2: Proceso de Elaboración de la Matriz de Compatibilidad y Matriz Guía</h3>
+            <div class="theory-box">
+                <p>La elaboración de una matriz de compatibilidad química define qué productos pueden almacenarse juntos (compatible) y cuáles deben separarse (incompatible) para reducir el riesgo de reacciones peligrosas.</p>
+
+                <h4>Etapas del Proceso de Elaboración</h4>
+                <ul>
+                    <li><strong>1. Conocimiento y Preparación:</strong> Crear y mantener un inventario actualizado (cantidad y fecha de adquisición); recopilar las FDS revisando especialmente la <strong>Sección 14</strong> (clasificación de peligro de Naciones Unidas - UN o regulaciones de transporte), la <strong>Sección 10</strong> (reactividad, estabilidad, almacenamiento y reacciones peligrosas) y la <strong>Sección 3</strong> (composición química, sobre todo en mezclas); identificar condiciones de almacenamiento, cantidades máximas y envases; y evaluar logística/infraestructura (ventilación, sistemas de emergencia, exceso de productos).</li>
+                    <li><strong>2. Clasificación de Peligros y Diseño:</strong> Identificar la clase de peligro UN (nueve clases de peligro) en la Sección 14 de la FDS y estructurar una tabla de doble entrada (por ejemplo, en Excel), listando productos o clases verticalmente y horizontalmente (preferiblemente en orden inverso). La matriz puede considerarse triangular, ya que comparar una sustancia consigo misma es redundante.</li>
+                    <li><strong>3. Aplicación de la Matriz Guía Estándar:</strong> Agrupar productos por clase de riesgo y cruzar clases en la matriz guía preliminar codificada por colores.</li>
+                    <li><strong>4. Resolución de Casos "Amarillos" y Excepciones:</strong> Revisar individualmente la FDS (composición y Sección 10) ante cruces "Amarillos" o posibles reacciones entre productos de la misma clase (por ejemplo, ácido sulfúrico e hidróxido de sodio son ambos corrosivos Clase 8, pero incompatibles entre sí y deben resolverse como "Rojo"). La matriz final de la empresa debe ser <strong>bicolor</strong>: <strong>Verde</strong> (compatibles) o <strong>Rojo</strong> (incompatibles); no es válido un "tal vez".</li>
+                    <li><strong>5. Separación y Ubicación Final:</strong> Usar como "productos separadores" entre clases incompatibles aquellos no regulados por UN o descritos como "no peligrosos" en la FDS (Sección 2) o materiales inertes; reubicar productos especiales (gases comprimidos, explosivos, extremadamente reactivos) a lugares especiales (polvorín o neveras especiales) y plasmar la ubicación final en el plano del almacén considerando pasillos, salidas de emergencia, extintores y duchas.</li>
+                </ul>
+
+                <h4>Convenciones de la Matriz Guía y Restricciones Clave</h4>
+                <ul>
+                    <li><span class="c-verde">VERDE (Almacenamiento permitido):</span> Pueden almacenarse juntos, verificando siempre la reactividad individual en la FDS.</li>
+                    <li><span class="c-amarillo">AMARILLO (Precaución / Restricciones):</span> Revisar incompatibilidades individuales en la FDS; en la matriz final de la empresa debe resolverse a Rojo o Verde.</li>
+                    <li><span class="c-rojo">ROJO (Almacenamiento no permitido):</span> Incompatibles; deben almacenarse por separado.</li>
+                    <li><strong>Restricciones específicas:</strong> Barreras físicas (paredes o armarios de seguridad) para evitar contacto en incidentes; líquidos corrosivos en envases frágiles no deben ir junto a líquidos inflamables salvo separación efectiva (gabinetes de seguridad); corrosivos incompatibles (como ácido sulfúrico e hidróxido de sodio) requieren separación y cubetos independientes; nunca almacenar juntos productos con agentes extintores incompatibles; peróxidos orgánicos (Clase 5.2) en almacenamiento exclusivo; gases a presión (Clase 2) separados del resto e inflamables separados de otros gases.</li>
+                </ul>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Clase UN (Guía)</th>
+                                <th>2. Gases</th>
+                                <th>3. Líquidos Inflamables</th>
+                                <th>8. Corrosivos</th>
+                                <th>9. Sustancias Varias</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Explosivos</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-amarillo">Amarillo (Nota 1)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Gases</strong></td>
+                                <td>—</td>
+                                <td class="c-amarillo">Amarillo (Nota 3)</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Líquidos Inflamables</strong></td>
+                                <td>—</td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-amarillo">Amarillo (Nota 4)</td>
+                                <td class="c-amarillo">Amarillo (Nota 6)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4.1. Sólidos Inflamables</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-amarillo">Amarillo (Nota 1)</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4.2. Combustión Espontánea</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-verde">Verde</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4.3. Desprenden Gases con H2O</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-verde">Verde</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5.1. Sustancias Comburentes</strong></td>
+                                <td class="c-amarillo">Amarillo (Nota 2)</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5.2. Peróxidos Orgánicos</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-rojo">Rojo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>6.1. Sustancias Tóxicas Agudas</strong></td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-amarillo">Amarillo (Nota 6)</td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-verde">Verde</td>
+                            </tr>
+                            <tr>
+                                <td><strong>8. Sustancias Corrosivas</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-amarillo">Amarillo (Nota 4)</td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-verde">Verde</td>
+                            </tr>
+                            <tr>
+                                <td><strong>9. Sustancias Varias</strong></td>
+                                <td class="c-rojo">Rojo</td>
+                                <td class="c-amarillo">Amarillo (Nota 6)</td>
+                                <td class="c-verde">Verde</td>
+                                <td class="c-verde">Verde</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="micro-check">
+                <label>
+                    <input type="checkbox" onchange="toggleModuleComplete(1, this.checked)">
+                    Confirmo que he leído y comprendido el contenido del Módulo 2.
+                </label>
+            </div>
+        </div>
+
+        <!-- MÓDULO 3 -->
+        <div class="module-content" id="mod-2">
+            <h3>Módulo 3: Norma Venezolana FONDONORMA 1040:2006 (Extintores Portátiles y Carga Calorífica)</h3>
+            <div class="theory-box">
+                <p>La Norma Venezolana <strong>FONDONORMA 1040:2006</strong> (revisión de 2006, que sustituye a la 1040:1989 y fue aprobada por el Consejo Superior N° 2006-06 el 20/12/2006) establece los requisitos mínimos para la <strong>fabricación, selección e instalación</strong> de extintores portátiles. Se vincula con las normas COVENIN 1114:2000 (potencial de efectividad), COVENIN 187:2003 (colores, símbolos y señales de seguridad) y COVENIN 1213:1998 (inspección y mantenimiento).</p>
+
+                <h4>Definiciones, Clases de Fuego y Niveles de Riesgo</h4>
+                <ul>
+                    <li><strong>Conceptos:</strong> <em>Extintor:</em> aparato que contiene un agente extinguidor. <em>Agente extinguidor:</em> sustancia utilizada para combatir el fuego. <em>Potencial de efectividad:</em> medida del poder de extinción. <em>Carga calorífica:</em> cantidad de calor liberada por la combustión. <em>Riesgo:</em> evaluación de la posibilidad de incendio o explosión en función de la combustibilidad de los materiales, facilidades de propagación del incendio, generación de humo y vapores tóxicos.</li>
+                    <li><strong>Clases de Fuego:</strong> <strong>Clase A</strong> (sólidos comunes: madera, papel, tela); <strong>Clase B</strong> (líquidos inflamables y gases: gasolina, aceites, pinturas); <strong>Clase C</strong> (equipos eléctricos energizados); <strong>Clase D</strong> (metales reactivos: sodio, magnesio, aluminio); <strong>Clase K</strong> (aceites y grasas de cocina).</li>
+                    <li><strong>Niveles de Riesgo:</strong> <em>Riesgo leve</em> (baja combustibilidad, sin riesgo de explosión); <em>Riesgo moderado</em> (materiales combustibles, posible humo); <em>Riesgo alto</em> (gran magnitud de fuego, vapores tóxicos o explosión).</li>
+                </ul>
+
+                <h4>Carga Calorífica y Coeficientes Cb (Clases A y B)</h4>
+                <div class="formula-box">CC = (Pt × Cb) / AT &nbsp;&nbsp;[en Kcal/m²]</div>
+                <ul>
+                    <li><strong>Variables:</strong> <em>CC</em> = carga calorífica (Kcal/m²); <em>Pt</em> = peso total de los materiales presentes de una misma clase de fuego (kg); <em>Cb</em> = coeficiente de combustión para esa clase de fuego (Kcal/kg); <em>AT</em> = área total (m²).</li>
+                    <li><strong>Coeficientes Cb:</strong> Clase A → <strong>4.444 Kcal/kg</strong>; Clase B → <strong>8.888 Kcal/kg</strong>. El concepto de carga calorífica <strong>no es aplicable</strong> para los fuegos Clase C, D y K.</li>
+                    <li><strong>Clasificación de Carga Calorífica:</strong> <strong>Baja</strong> (hasta 250.000 Kcal/m²); <strong>Media</strong> (entre 250.000 y 500.000 Kcal/m²); <strong>Alta</strong> (desde 500.000 Kcal/m² en adelante).</li>
+                </ul>
+
+                <h4>Selección de Agente, Potencial de Efectividad, Ubicación y Rotulación</h4>
+                <ul>
+                    <li><strong>Fuego Clase A:</strong> El potencial de efectividad mínimo puede ser el de un solo extintor o la suma de varios, según riesgo, carga calorífica y área a proteger (Tabla 3). Si el área excede 1.500 m², se toma el mínimo para 1.500 m² y se suma el correspondiente al área adicional. Distancia máxima de recorrido al usuario: <strong>20 m</strong>.</li>
+                    <li><strong>Fuego Clase B:</strong> El potencial de efectividad mínimo corresponde a <strong>un solo extintor</strong> (no se pueden combinar extintores para alcanzar el potencial requerido). Si la profundidad máxima del líquido en recipientes, tanques o canales abiertos es <strong>≤ 6 mm</strong>, se usa la tabla de potencial según carga calorífica (ej. distancia máxima 10 m → 5B). Si la profundidad es <strong>&gt; 6 mm</strong>, se asigna <strong>1 unidad de potencial por cada 0,10 m²</strong> (10 unidades por cada m²) de superficie del líquido del recipiente, tanque o canal de mayor tamaño, con distancia máxima de recorrido al usuario no mayor a <strong>15 m</strong>.</li>
+                    <li><strong>Instalación, Rotulación y Mantenimiento:</strong> Ubicación de fácil acceso, clara identificación (Norma Venezolana 187), sin obstrucciones y con altura máxima de extintores manuales no mayor a <strong>1,30 m</strong> del piso. Mantenimiento según COVENIN 1213; rotulación legible en el cuerpo del extintor, en <strong>idioma castellano</strong>, indicando fecha de fabricación, tipo de agente extinguidor, clase de fuego, potencial de efectividad e instrucciones de uso, con <strong>certificado de garantía de 5 años</strong> contra defectos mecánicos por parte de los fabricantes.</li>
+                </ul>
+            </div>
+            <div class="micro-check">
+                <label>
+                    <input type="checkbox" onchange="toggleModuleComplete(2, this.checked)">
+                    Confirmo que he leído y comprendido el contenido del Módulo 3.
+                </label>
+            </div>
+        </div>
+
+        <!-- MÓDULO 4 -->
+        <div class="module-content" id="mod-3">
+            <h3>Módulo 4: Decreto N° 2.195 — Reglamento sobre Prevención de Incendio</h3>
+            <div class="theory-box">
+                <p>Reforma del Reglamento sobre Prevención de Incendio emitida por la Presidencia de la República el <strong>17/08/1983</strong> mediante <strong>Decreto N° 2.195</strong> y publicada en <strong>Gaceta Oficial N° 3.270 (E) el 31/10/1983</strong>. Rige en locales de trabajo y edificaciones de altura superior a 10 m destinadas a oficinas, comercios o vivienda, y en edificaciones de cualquier altura con acceso o reunión de público (clubes, centros asistenciales, educacionales, cívicos o similares) (Art. 1).</p>
+
+                <h4>Manejo, Almacenamiento y Fuentes de Ignición</h4>
+                <ul>
+                    <li><strong>Riesgo de Rápida Propagación / Explosión:</strong> Procedimientos industriales con este riesgo deben realizarse en edificaciones aisladas fuera de lugares poblados o en áreas industriales previstas (Art. 2), prohibiéndose instalar en áreas urbanas industrias con riesgo de incendio de rápida propagación y difícil control (Art. 45).</li>
+                    <li><strong>Explosivos, Reactivos, Inflamables y Radiactivos:</strong> Prohibida toda fuente de ignición donde se fabriquen, manipulen, traseguen o almacenen explosivos, con avisos alusivos (Art. 3). Prohibido su manejo, transporte y almacenamiento en condiciones inseguras o recipientes/ductos no diseñados para ello; el transporte por centros urbanos solo se permite de noche entre las <strong>9:00 p.m. y las 5:00 a.m.</strong>, salvo permiso especial diurno (Art. 4).</li>
+                    <li><strong>Escapes, Locales Habitables, Sótanos y Combustión Espontánea:</strong> Evitar escapes de gases o líquidos inflamables hacia fuentes de ignición, sótanos, cloacas, sumideros o desagües no industriales (Art. 5). Prohibido almacenar líquidos o materiales inflamables en locales habitables (salvo requerimiento necesario de la actividad cumpliendo Arts. 4 y 7–10) (Art. 6), y encima o al lado de sótanos/fosos sin ventilación adecuada (Art. 7). En silos, cavas o depósitos con productos orgánicos, controlar humedad y medir temperatura interior para evitar combustión espontánea (Art. 16).</li>
+                    <li><strong>Electricidad Estática, Trabajos y Quemas:</strong> Conectar a tierra cuerpos susceptibles de acumular electricidad estática en atmósferas inflamables y evitar chispas (Art. 17). Toda quema de basura o desechos o encendido de hogueras en terrenos públicos o privados requiere aprobación previa por escrito del Cuerpo de Bomberos de la localidad (Art. 19).</li>
+                </ul>
+
+                <h4>Medios de Escape, Protección Estructural, Obligaciones y Sanciones</h4>
+                <ul>
+                    <li><strong>Medios de Escape y Escaleras:</strong> Deben estar protegidos, libres de obstáculos, iluminados y señalizados; si se requiere más de una salida, al menos una debe estar siempre disponible (Art. 31). Puertas de acceso a escape resistentes al fuego, abriendo en sentido de salida y con cerraduras libres desde el interior hacia la vía de escape (Art. 32). Escaleras de escape permanentes y resistentes al fuego, sin acceso a servicios (basura, ductos, ascensores, limpieza) y sin seguir en forma continua hacia niveles inferiores al nivel principal de salida (Art. 33). Escaleras mecánicas se interrumpen automáticamente al registrarse la alarma (Art. 34).</li>
+                    <li><strong>Propagación, Electricidad y Ascensores:</strong> Control de propagación vertical y horizontal con barreras cortafuego, detección/alarma con notificación al Cuerpo de Bomberos y extinción según riesgo (Art. 35). Instalaciones eléctricas conforme al Código Eléctrico Nacional y sistemas de detección que accionen cierre/interrupción de manejo de aire, extinción, iluminación de emergencia, alarma y equipos de emergencia (Art. 36). Edificios de <strong>25 m o más</strong> de altura deben tener ascensores con llamada preferencial, ventilación mecánica propia y descenso automático al nivel de salida principal en caso de siniestro (Art. 37).</li>
+                    <li><strong>Brigadas, Vigilancia, Informes y Sanciones:</strong> Obligación de adiestrar personal e integrar brigadas de prevención, manteniendo vigilancia diurna y nocturna incluso en horas de cierre y feriados (Art. 22). Equipos de extinción pintados de rojo (Art. 26) con instrucciones en castellano (Art. 27). Informar a Ministerio del Trabajo, autoridad civil, Cuerpos de Bomberos e IVSS sobre existencia y cantidad de materias inflamables o explosivas (Art. 21). Inobservancia que ocasione incendio conlleva pena del Art. 357 del Código Penal (Art. 38); el Ministerio de Fomento puede ordenar cierre temporal (Arts. 39–40) o definitivo por reincidencia (Art. 42), y prohibir eventos públicos si no se cumplen requerimientos (Art. 41).</li>
+                </ul>
+            </div>
+            <div class="micro-check">
+                <label>
+                    <input type="checkbox" onchange="toggleModuleComplete(3, this.checked)">
+                    Confirmo que he leído y comprendido el contenido del Módulo 4.
+                </label>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <div>
+                <button class="btn" id="prevModBtn" onclick="changeModule(-1)" disabled>&larr; Anterior</button>
+                <button class="btn" id="nextModBtn" onclick="changeModule(1)">Siguiente &rarr;</button>
+            </div>
+            <button class="btn btn-danger" id="startExamBtn" onclick="startExam()" disabled>
+                🔒 Complete los 4 módulos para evaluar
+            </button>
+        </div>
+    </section>
+
+    <!-- VISTA 3: EVALUACIÓN FINAL -->
+    <section id="view-exam" class="view-section">
+        <h2>3. Evaluación Final de Conocimientos</h2>
+        <p style="margin-bottom: 1.2rem;">Se presentarán 10 preguntas seleccionadas aleatoriamente del banco del curso (2 puntos cada una). Escala: 1 a 20 pts | Nota mínima aprobatoria: <strong>12 / 20 puntos</strong>.</p>
+        
+        <form id="examForm">
+            <div id="questionsContainer"></div>
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <button type="submit" class="btn btn-success" id="submitExamBtn">Finalizar y Enviar Evaluación</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- VISTA 4: RESULTADOS -->
+    <section id="view-results" class="view-section">
+        <h2>4. Resultados de la Evaluación</h2>
+        
+        <div id="scoreCard" class="score-box">
+            <div id="statusBadge" style="font-weight: 700; font-size: 1.2rem;"></div>
+            <div class="score-number" id="finalScore">0 / 20</div>
+            <div id="scoreDetails"></div>
+        </div>
+
+        <div id="syncStatus" class="sync-banner">
+            ⏳ Preparando sincronización con Google Sheets...
+        </div>
+
+        <h3>Revisión y Sustento Técnico de Respuestas</h3>
+        <div id="feedbackContainer"></div>
+    </section>
+</div>
+
+<script>
+    // ==========================================
+    // CONFIGURACIÓN GLOBAL Y ESTADO DEL CURSO
+    // ==========================================
+    const CONFIG = {
+        maxScore: 20,
+        passingScore: 12,
+        totalModules: 4,
+        examQuestionCount: 10,
+        // Pegue aquí la URL de su implementación Web App de Google Apps Script (terminada en /exec)
+        googleScriptURL: "https://script.google.com/macros/s/AKfycbyJ1kAf-z6GP5qP3M_oKk5VYjojIhDx4vtXwItGicvZUsnfZvw-tuVruVXIzBxMsHtP/exec"
+    };
+
+    let courseState = {
+        user: {},
+        startTime: null,
+        endTime: null,
+        currentModule: 0,
+        completedModules: [false, false, false, false],
+        activeQuestions: [],
+        submitted: false
+    };
+
+    // Banco de 20 preguntas estrictamente basado en los contenidos de los Módulos 1 a 4
+    const questionBank = [
+        // --- MÓDULO 1 ---
+        {
+            mod: "Módulo 1",
+            q: "Si se realiza el trasvase de un producto químico a un nuevo recipiente, ¿qué exige la gestión del almacenamiento respecto a su etiquetado?",
+            options: [
+                "Etiquetar el nuevo recipiente con la información del original, asegurando legibilidad, identidad, fabricante/importador y peligros físicos y para la salud",
+                "Dejarlo sin etiqueta si el trasvase se realiza dentro del mismo almacén",
+                "Indicar únicamente el nombre comercial sin mencionar peligros físicos ni pictogramas",
+                "Usar un envase cualquiera sin consultar el recipiente original"
+            ],
+            answer: 0,
+            rationale: "Al realizar un trasvase, se debe etiquetar el nuevo recipiente con la información del original, de forma legible, incluyendo identidad, fabricante/importador y peligros físicos y para la salud (Módulo 1)."
+        },
+        {
+            mod: "Módulo 1",
+            q: "Si se almacenan líquidos de diferentes clases en una misma estantería, ¿cómo debe considerarse el conjunto?",
+            options: [
+                "Como el líquido de la clase o categoría más peligrosa",
+                "Como material inerte no regulado",
+                "Como líquido de la categoría de menor riesgo",
+                "Sin restricción alguna mientras estén en estantes metálicos"
+            ],
+            answer: 0,
+            rationale: "Cuando se almacenan líquidos de diferentes clases en una misma estantería, el conjunto se considera como el líquido de la clase o categoría más peligrosa (Módulo 1)."
+        },
+        {
+            mod: "Módulo 1",
+            q: "¿Qué criterio se indica sobre la temperatura y el apilamiento en las instalaciones y contenedores del almacén?",
+            options: [
+                "Conservación general entre 15 y 20 °C, evitando almacenar directo sobre el suelo y colocando líquidos de mayor capacidad y productos más peligrosos abajo",
+                "Conservación obligatoria por encima de 45 °C y apilando los productos más peligrosos en los niveles más altos",
+                "Colocar bidones directamente sobre el suelo en pasillos de tránsito y salas de descanso",
+                "Exponer todos los envases a luz solar directa para mejorar la visibilidad"
+            ],
+            answer: 0,
+            rationale: "Los productos se conservan bien generalmente entre 15 y 20 °C, protegidos de luz solar directa; los envases van sobre paletas o estanterías, con líquidos de mayor capacidad y productos más peligrosos abajo (Módulo 1)."
+        },
+        {
+            mod: "Módulo 1",
+            q: "¿Cómo deben almacenarse los productos que reaccionan con el agua y las sustancias explosivas según el Módulo 1?",
+            options: [
+                "Los que reaccionan con el agua en lugares secos y ventilados con aviso que prohíba el agua en incendio; los explosivos fuera del almacén en un lugar especial (polvorín)",
+                "Ambos dentro del almacén general junto a líquidos inflamables y duchas de emergencia",
+                "Los que reaccionan con el agua en cubetos inundados y los explosivos en vestíbulos",
+                "Los explosivos en estanterías superiores junto a sustancias comburentes"
+            ],
+            answer: 0,
+            rationale: "Los productos reactivos al agua requieren lugares secos y ventilados con aviso visible que prohíba el uso de agua en incendio, y los explosivos deben ubicarse fuera del almacén en un polvorín (Módulo 1)."
+        },
+        {
+            mod: "Módulo 1",
+            q: "¿Qué señalización de advertencia debe emplearse cuando se almacenan productos químicos con diferente peligrosidad?",
+            options: [
+                "La señal de advertencia de 'peligro en general'",
+                "Únicamente la señal de salida de emergencia",
+                "Ninguna señalización si existe inventario en papel",
+                "Solo la señal de riesgo biológico"
+            ],
+            answer: 0,
+            rationale: "Se debe emplear la señal de advertencia de 'peligro en general' cuando se almacenen productos químicos con diferente peligrosidad (Módulo 1)."
+        },
+
+        // --- MÓDULO 2 ---
+        {
+            mod: "Módulo 2",
+            q: "¿Qué secciones de la Ficha de Datos de Seguridad (FDS) son cruciales al elaborar la matriz de compatibilidad según el Módulo 2?",
+            options: [
+                "Sección 14 (clasificación de peligro UN o regulaciones de transporte), Sección 10 (reactividad, estabilidad y reacciones peligrosas) y Sección 3 (composición química, especialmente en mezclas)",
+                "Únicamente la Sección 1 (identificación telefónica) y la Sección 16 (otra información)",
+                "Solo la Sección 8 (controles de exposición) sin revisar reactividad ni clase UN",
+                "Exclusivamente el precio unitario y el lote de facturación"
+            ],
+            answer: 0,
+            rationale: "Para el almacenamiento y la matriz de compatibilidad son cruciales la Sección 14 (clasificación UN), Sección 10 (reactividad, estabilidad y reacciones peligrosas) y Sección 3 (composición química) (Módulo 2)."
+        },
+        {
+            mod: "Módulo 2",
+            q: "¿Cómo debe resolverse la matriz final de compatibilidad química de la empresa frente a los casos 'Amarillos' de la matriz guía?",
+            options: [
+                "Debe ser bicolor (Verde = compatibles o Rojo = incompatibles), resolviendo los 'Amarillos' a Rojo o Verde tras revisar la FDS individual; no es válido un 'tal vez'",
+                "Debe mantenerse en tres colores ('Verde', 'Amarillo' y 'Tal vez') sin revisar las FDS",
+                "Todos los casos 'Amarillos' pasan automáticamente a 'Verde' sin análisis individual",
+                "Se resuelve únicamente por orden alfabético del nombre comercial"
+            ],
+            answer: 0,
+            rationale: "La matriz final de la empresa debe ser bicolor (Verde o Rojo), resolviendo los 'Amarillos' de la matriz guía en Rojo o Verde mediante análisis de las FDS; no es válido un 'tal vez' (Módulo 2)."
+        },
+        {
+            mod: "Módulo 2",
+            q: "¿Qué ejemplo de incompatibilidad dentro de una misma clase de riesgo se menciona en el Módulo 2?",
+            options: [
+                "El ácido sulfúrico y el hidróxido de sodio, que son corrosivos (Clase 8) pero incompatibles entre sí y deben separarse (resolución 'Rojo')",
+                "El agua destilada y el aire atmosférico en un almacén seco",
+                "Dos lotes de la misma sustancia neutra sin reacción",
+                "El cartón seco y el papel de oficina"
+            ],
+            answer: 0,
+            rationale: "El ácido sulfúrico y el hidróxido de sodio pertenecen a la Clase 8 (corrosivos), pero son incompatibles entre sí y deben separarse (resolviéndose como 'Rojo') (Módulo 2)."
+        },
+        {
+            mod: "Módulo 2",
+            q: "¿Qué productos pueden actuar como 'productos separadores' entre dos clases incompatibles al definir la ubicación final?",
+            options: [
+                "Productos no regulados por Naciones Unidas o descritos como 'no peligrosos' en la FDS (Sección 2), o materiales inertes",
+                "Líquidos inflamables de Clase 3 en envases de vidrio",
+                "Peróxidos orgánicos de Clase 5.2",
+                "Gases comprimidos inflamables de Clase 2"
+            ],
+            answer: 0,
+            rationale: "Los productos no regulados por UN o descritos como 'no peligrosos' en la FDS (Sección 2), así como materiales inertes, pueden servir como 'productos separadores' entre clases incompatibles (Módulo 2)."
+        },
+        {
+            mod: "Módulo 2",
+            q: "Según la Matriz Guía de Almacenamiento Químico (Clase UN), ¿cuál es el cruce indicado entre '1. Explosivos' y '3. Líquidos Inflamables', y entre '3. Líquidos Inflamables' y '3. Líquidos Inflamables'?",
+            options: [
+                "Explosivos con Líquidos Inflamables: Rojo (no permitido); Líquidos Inflamables con Líquidos Inflamables: Verde (permitido verificando reactividad individual)",
+                "Ambos cruces son Verde sin restricciones",
+                "Explosivos con Líquidos Inflamables: Verde; Líquidos Inflamables entre sí: Rojo",
+                "Ambos cruces son Amarillo (Nota 5)"
+            ],
+            answer: 0,
+            rationale: "En la Matriz Guía, 1. Explosivos con 3. Líquidos Inflamables es Rojo, mientras que 3. Líquidos Inflamables con 3. Líquidos Inflamables es Verde (verificando reactividad individual en la FDS) (Módulo 2)."
+        },
+
+        // --- MÓDULO 3 ---
+        {
+            mod: "Módulo 3",
+            q: "¿Cuál es la fórmula para calcular la carga calorífica (CC) y cuáles son los coeficientes de combustión (Cb) para las clases aplicables según el Módulo 3?",
+            options: [
+                "CC = (Pt × Cb) / AT; con Cb = 4.444 Kcal/kg para Clase A y Cb = 8.888 Kcal/kg para Clase B (no aplica a Clases C, D y K)",
+                "CC = AT / (Pt × Cb); con Cb = 1.000 Kcal/kg para todas las clases de fuego",
+                "CC = Pt + Cb + AT; aplicable por igual a fuegos Clase C y Clase D",
+                "CC = (AT × Cb) / Pt; con Cb = 8.888 Kcal/kg para Clase A"
+            ],
+            answer: 0,
+            rationale: "La carga calorífica se calcula como CC = (Pt × Cb) / AT, usando Cb = 4.444 Kcal/kg para Clase A y Cb = 8.888 Kcal/kg para Clase B; no aplica a Clases C, D y K (Módulo 3)."
+        },
+        {
+            mod: "Módulo 3",
+            q: "¿Cuáles son los rangos de clasificación de la carga calorífica (en Kcal/m²) según el Módulo 3?",
+            options: [
+                "Baja: hasta 250.000 Kcal/m²; Media: entre 250.000 y 500.000 Kcal/m²; Alta: desde 500.000 Kcal/m² en adelante",
+                "Baja: hasta 50.000 Kcal/m²; Media: 50.001 a 100.000 Kcal/m²; Alta: más de 100.000 Kcal/m²",
+                "Baja: hasta 1.000.000 Kcal/m²; Media: 1.000.001 a 2.000.000 Kcal/m²; Alta: más de 2.000.000 Kcal/m²",
+                "La norma no establece rangos numéricos de carga calorífica"
+            ],
+            answer: 0,
+            rationale: "La carga calorífica se clasifica en Baja (hasta 250.000 Kcal/m²), Media (entre 250.000 y 500.000 Kcal/m²) y Alta (desde 500.000 Kcal/m² en adelante) (Módulo 3)."
+        },
+        {
+            mod: "Módulo 3",
+            q: "Para fuegos Clase B con profundidad máxima de líquido mayor de 6 mm, ¿cuál es el potencial de efectividad mínimo y la regla sobre combinar extintores?",
+            options: [
+                "1 unidad de potencial por cada 0,10 m² (10 unidades por m²) de superficie del recipiente/tanque/canal mayor, en un solo extintor (no se pueden combinar extintores) y distancia máxima de 15 m",
+                "Se pueden sumar varios extintores pequeños hasta completar el potencial, con distancia máxima de 30 m",
+                "1 unidad de potencial por cada 10 m² de superficie, con distancia máxima de 20 m",
+                "Aplica únicamente la Tabla 3 de fuego Clase A"
+            ],
+            answer: 0,
+            rationale: "Para Clase B con profundidad > 6 mm, se requiere 1 unidad por cada 0,10 m² (10 unidades/m²) de superficie mayor, en un solo extintor (sin combinar extintores) y recorrido máximo de 15 m (Módulo 3)."
+        },
+        {
+            mod: "Módulo 3",
+            q: "¿Cuál es la altura máxima de instalación de los extintores manuales y la distancia máxima de recorrido para Clase A según el Módulo 3?",
+            options: [
+                "Altura máxima no mayor a 1,30 m del piso y distancia máxima de recorrido al usuario de 20 m para Clase A (15 m para Clase B)",
+                "Altura máxima de 2,20 m del piso y distancia máxima de 50 m para todas las clases",
+                "Altura máxima de 0,50 m del piso y distancia máxima de 5 m para Clase A",
+                "No existe límite de altura ni de distancia de recorrido"
+            ],
+            answer: 0,
+            rationale: "La altura máxima de extintores manuales no debe ser mayor a 1,30 m del piso, y la distancia máxima al usuario es de 20 m para Clase A y 15 m para Clase B (Módulo 3)."
+        },
+        {
+            mod: "Módulo 3",
+            q: "¿Qué condiciones debe cumplir la rotulación y garantía de los extintores portátiles según el Módulo 3?",
+            options: [
+                "Información legible en el cuerpo del extintor en idioma castellano (fecha de fabricación, tipo de agente, clase de fuego, potencial de efectividad e instrucciones de uso) y certificado de garantía de 5 años contra defectos mecánicos",
+                "Rotulación solo en inglés o en códigos numéricos sin instrucciones y garantía de 6 meses",
+                "No requiere fecha de fabricación ni instrucciones de uso en el cuerpo del extintor",
+                "Garantía de 1 año únicamente para extintores Clase D"
+            ],
+            answer: 0,
+            rationale: "El extintor debe tener información legible en el cuerpo, en idioma castellano, con fecha de fabricación, agente, clase de fuego, potencial e instrucciones de uso, además de garantía de 5 años contra defectos mecánicos (Módulo 3)."
+        },
+
+        // --- MÓDULO 4 ---
+        {
+            mod: "Módulo 4",
+            q: "Según el Artículo 4 del Decreto N° 2.195, ¿en qué horario pueden transportarse por centros urbanos los materiales reactivos, inflamables y radiactivos (salvo permiso especial)?",
+            options: [
+                "Solo de noche, entre las 9:00 p.m. y las 5:00 a.m.",
+                "Solo en horas pico de comercio entre las 8:00 a.m. y las 12:00 m.",
+                "A cualquier hora sin restricción ni permiso especial",
+                "Únicamente los fines de semana al mediodía"
+            ],
+            answer: 0,
+            rationale: "El Artículo 4 del Decreto N° 2.195 establece que no podrán ser transportados por centros urbanos sino de noche, entre las 9:00 p.m. y las 5:00 a.m., salvo permiso especial para movilización diurna (Módulo 4)."
+        },
+        {
+            mod: "Módulo 4",
+            q: "¿Qué requisito exigen los Artículos 32 y 33 del Decreto N° 2.195 para puertas y escaleras que constituyan medios de escape?",
+            options: [
+                "Puertas resistentes al fuego, abriendo en sentido de salida y con cerraduras libres desde el interior hacia la vía de escape; escaleras permanentes y resistentes al fuego, sin acceso a servicios ni continuidad hacia niveles inferiores al principal de salida",
+                "Puertas que abran hacia adentro del recinto con llave cerrada desde el interior y escaleras que bajen a sótanos en forma continua",
+                "Escaleras de madera o materiales combustibles con acceso a bajantes de basura y ascensores",
+                "Puertas bloqueadas en horario laboral para evitar salidas no autorizadas"
+            ],
+            answer: 0,
+            rationale: "Los Artículos 32 y 33 disponen que las puertas de escape abran en sentido de salida con cerraduras libres desde el interior y que las escaleras sean permanentes, resistentes al fuego, sin servicios ni continuidad bajo el nivel principal de salida (Módulo 4)."
+        },
+        {
+            mod: "Módulo 4",
+            q: "¿Qué disposición establece el Artículo 37 del Decreto N° 2.195 para edificios de 25 metros de altura o más?",
+            options: [
+                "Disponer de ascensores con llamada preferencial, ventilación mecánica propia y mecanismos que los accionen en caso de siniestro a bajar al nivel de salida principal",
+                "Prohibir totalmente el uso de ascensores y eliminar toda ventilación mecánica",
+                "Instalar ascensores únicamente hasta el piso 3 sin retorno automático",
+                "No aplica ninguna medida especial por altura en el Decreto"
+            ],
+            answer: 0,
+            rationale: "El Artículo 37 exige que los edificios de 25 metros o más dispongan de ascensores con llamada preferencial, ventilación mecánica propia y descenso automático al nivel de salida principal en caso de siniestro (Módulo 4)."
+        },
+        {
+            mod: "Módulo 4",
+            q: "Según el Artículo 22 del Decreto N° 2.195, ¿qué implica la obligación de adiestrar personal e integrar brigadas de prevención?",
+            options: [
+                "Mantener vigilancia diurna y nocturna permanente, aun durante horas de cierre de las instalaciones y días feriados",
+                "Vigilar únicamente de lunes a viernes en horario de oficina",
+                "Delegar la seguridad solo durante eventos recreativos",
+                "Suspender la vigilancia los días feriados"
+            ],
+            answer: 0,
+            rationale: "El Artículo 22 establece que esta previsión implica el mantenimiento permanente de vigilancia diurna y nocturna aun durante horas de cierre y días feriados (Módulo 4)."
+        },
+        {
+            mod: "Módulo 4",
+            q: "¿Qué medidas prevén los Artículos 16, 17 y 19 del Decreto N° 2.195 respecto a combustión espontánea, electricidad estática y quemas?",
+            options: [
+                "Controlar humedad y medir temperatura interior en depósitos de productos orgánicos; conectar a tierra cuerpos susceptibles de acumular electricidad estática; y obtener aprobación previa por escrito del Cuerpo de Bomberos para quemas o hogueras",
+                "Humedecer los explosivos para evitar chispas y quemar desechos libremente sin aviso a Bomberos",
+                "Aislar los equipos de tierra eléctrica y permitir quemas sin autorización en áreas urbanas",
+                "Medir únicamente la temperatura exterior de los edificios sin control interno ni conexión a tierra"
+            ],
+            answer: 0,
+            rationale: "Los Artículos 16, 17 y 19 regulan el control de humedad/temperatura en productos orgánicos, la conexión a tierra contra electricidad estática y la aprobación previa por escrito del Cuerpo de Bomberos para quemas o hogueras (Módulo 4)."
+        }
+    ];
+
+    // ==========================================
+    // NAVEGACIÓN ENTRE VISTAS
+    // ==========================================
+    function showView(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        courseState.user = {
+            id: document.getElementById('userId').value.trim(),
+            name: document.getElementById('userName').value.trim(),
+            dept: document.getElementById('userDept').value.trim()
+        };
+        courseState.startTime = new Date();
+
+        document.getElementById('dispName').textContent = courseState.user.name;
+        document.getElementById('dispId').textContent = courseState.user.id;
+        document.getElementById('studentBar').style.display = 'flex';
+
+        showView('view-theory');
+    });
+
+    // ==========================================
+    // CONTROL DE MÓDULOS TEÓRICOS
+    // ==========================================
+    function switchModule(index) {
+        courseState.currentModule = index;
+
+        document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+            btn.classList.toggle('active', idx === index);
+        });
+
+        document.querySelectorAll('.module-content').forEach((mod, idx) => {
+            mod.classList.toggle('active', idx === index);
+        });
+
+        document.getElementById('prevModBtn').disabled = (index === 0);
+        document.getElementById('nextModBtn').disabled = (index === CONFIG.totalModules - 1);
+    }
+
+    function changeModule(step) {
+        const nextIndex = courseState.currentModule + step;
+        if (nextIndex >= 0 && nextIndex < CONFIG.totalModules) {
+            switchModule(nextIndex);
+        }
+    }
+
+    function toggleModuleComplete(index, isChecked) {
+        courseState.completedModules[index] = isChecked;
+        const tab = document.getElementById(`tab-${index}`);
+        tab.classList.toggle('completed', isChecked);
+
+        const completedCount = courseState.completedModules.filter(Boolean).length;
+        document.getElementById('dispProgress').textContent = `${completedCount} / ${CONFIG.totalModules} Módulos`;
+
+        const examBtn = document.getElementById('startExamBtn');
+        if (completedCount === CONFIG.totalModules) {
+            examBtn.disabled = false;
+            examBtn.textContent = "Ir a la Evaluación Final →";
+        } else {
+            examBtn.disabled = true;
+            examBtn.textContent = `🔒 Complete los ${CONFIG.totalModules} módulos (${completedCount}/${CONFIG.totalModules})`;
+        }
+    }
+
+    // ==========================================
+    // MOTOR DE EVALUACIÓN (ALEATORIZACIÓN)
+    // ==========================================
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function startExam() {
+        const selectedPool = shuffleArray(questionBank).slice(0, CONFIG.examQuestionCount);
+        const shuffledQuestions = selectedPool.map(item => {
+            const optionsWithFlag = item.options.map((opt, idx) => ({
+                text: opt,
+                isCorrect: idx === item.answer
+            }));
+            return {
+                mod: item.mod,
+                q: item.q,
+                rationale: item.rationale,
+                options: shuffleArray(optionsWithFlag)
+            };
+        });
+
+        courseState.activeQuestions = shuffledQuestions;
+        renderQuestions();
+        showView('view-exam');
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
+
+        courseState.activeQuestions.forEach((item, qIndex) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            let optionsHTML = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="q_${qIndex}" value="${optIndex}" required>
+                        ${opt.text}
+                    </label>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="question-title">${qIndex + 1}. [${item.mod}] ${item.q}</div>
+                ${optionsHTML}
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // ==========================================
+    // SINCRONIZACIÓN CON GOOGLE SHEETS (FASE 3)
+    // ==========================================
+    function sendToGoogleSheets(payload) {
+        const syncStatusEl = document.getElementById('syncStatus');
+
+        if (!CONFIG.googleScriptURL || CONFIG.googleScriptURL.includes("PEGA_AQUI")) {
+            syncStatusEl.style.background = "#fef9e7";
+            syncStatusEl.style.borderColor = "#f9e79f";
+            syncStatusEl.style.color = "#7d6608";
+            syncStatusEl.textContent = "⚠️ Modo local: Pegue la URL de Google Apps Script (/exec) en CONFIG.googleScriptURL para activar el guardado en Google Sheets.";
+            return;
+        }
+
+        syncStatusEl.style.background = "#eef4fa";
+        syncStatusEl.style.borderColor = "#c5d6e8";
+        syncStatusEl.style.color = "#1b365d";
+        syncStatusEl.textContent = "⏳ Enviando registro a Google Sheets...";
+
+        fetch(CONFIG.googleScriptURL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            syncStatusEl.style.background = "#eafaf1";
+            syncStatusEl.style.borderColor = "#a9dfbf";
+            syncStatusEl.style.color = "#1e8449";
+            syncStatusEl.textContent = "✅ Registro enviado y sincronizado con Google Sheets.";
+        })
+        .catch((err) => {
+            syncStatusEl.style.background = "#fdedec";
+            syncStatusEl.style.borderColor = "#f5b7b1";
+            syncStatusEl.style.color = "#c8102e";
+            syncStatusEl.textContent = "❌ Error al enviar el registro: " + err.message;
+        });
+    }
+
+    // ==========================================
+    // CALIFICACIÓN Y CÁLCULO DE NOTA (1 A 20)
+    // ==========================================
+    document.getElementById('examForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (courseState.submitted) return;
+        courseState.submitted = true;
+
+        const submitBtn = document.getElementById('submitExamBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Procesando...";
+
+        courseState.endTime = new Date();
+
+        let correctCount = 0;
+        const totalQuestions = courseState.activeQuestions.length;
+        const reviewList = [];
+
+        courseState.activeQuestions.forEach((item, qIndex) => {
+            const selected = document.querySelector(`input[name="q_${qIndex}"]:checked`);
+            const chosenIdx = selected ? parseInt(selected.value) : -1;
+            const chosenOpt = chosenIdx >= 0 ? item.options[chosenIdx] : null;
+            const isRight = Boolean(chosenOpt && chosenOpt.isCorrect);
+            const correctOpt = item.options.find(o => o.isCorrect);
+
+            if (isRight) {
+                correctCount++;
+            }
+
+            reviewList.push({
+                index: qIndex + 1,
+                mod: item.mod,
+                q: item.q,
+                userAns: chosenOpt ? chosenOpt.text : "Sin responder",
+                correctAns: correctOpt ? correctOpt.text : "",
+                isRight: isRight,
+                rationale: item.rationale
+            });
+        });
+
+        let rawScore = (correctCount / totalQuestions) * CONFIG.maxScore;
+        let finalScore = Math.max(1, Math.round(rawScore * 100) / 100);
+        const passed = finalScore >= CONFIG.passingScore;
+
+        const durationMin = Math.max(1, Math.round((courseState.endTime - courseState.startTime) / 60000));
+
+        displayResults(finalScore, correctCount, totalQuestions, passed, durationMin, reviewList);
+    });
+
+    function displayResults(score, correct, total, passed, duration, reviewList) {
+        const scoreCard = document.getElementById('scoreCard');
+        const statusBadge = document.getElementById('statusBadge');
+        const finalScoreEl = document.getElementById('finalScore');
+        const scoreDetails = document.getElementById('scoreDetails');
+        const feedbackContainer = document.getElementById('feedbackContainer');
+
+        scoreCard.className = 'score-box ' + (passed ? 'score-pass' : 'score-fail');
+        statusBadge.textContent = passed ? '✅ ESTADO: APROBADO' : '❌ ESTADO: REPROBADO (Mínima: 12 pts)';
+        finalScoreEl.textContent = `${score} / ${CONFIG.maxScore}`;
+        scoreDetails.textContent = `Aciertos: ${correct} de ${total} | Tiempo total en curso: ${duration} min.`;
+
+        feedbackContainer.innerHTML = '';
+        reviewList.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'feedback-item ' + (item.isRight ? 'ok' : 'bad');
+            div.innerHTML = `
+                <div><strong>${item.index}. [${item.mod}] ${item.q}</strong></div>
+                <div>Tu respuesta: ${item.userAns} ${item.isRight ? '✅' : '❌'}</div>
+                ${!item.isRight ? `<div>Respuesta correcta: <strong>${item.correctAns}</strong></div>` : ''}
+                <div style="margin-top:0.3rem; font-size:0.86rem;"><em>Sustento:</em> ${item.rationale}</div>
+            `;
+            feedbackContainer.appendChild(div);
+        });
+
+        const completedCount = courseState.completedModules.filter(Boolean).length;
+        const summaryAnswers = reviewList
+            .map(r => `#${r.index} (${r.mod}): ${r.isRight ? "OK" : "ERROR"} -> ${r.userAns}`)
+            .join(" | ");
+
+        const payload = {
+            fecha: new Date().toLocaleString('es-VE'),
+            cedula: courseState.user.id,
+            nombre: courseState.user.name,
+            departamento: courseState.user.dept,
+            modulosCompletados: `${completedCount}/${CONFIG.totalModules}`,
+            tiempoMinutos: duration,
+            aciertos: `${correct}/${total}`,
+            calificacion: score,
+            estado: passed ? 'APROBADO' : 'REPROBADO',
+            puntajeMinimo: CONFIG.passingScore,
+            detalleRespuestas: summaryAnswers
+        };
+
+        sendToGoogleSheets(payload);
+        showView('view-results');
+    }
+</script>
+
+</body>
+</html>
